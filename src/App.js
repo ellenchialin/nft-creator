@@ -1,8 +1,13 @@
-import React from 'react';
-import { ChakraProvider, theme } from '@chakra-ui/react';
+import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
 
 function App() {
-  return <ChakraProvider theme={theme}></ChakraProvider>;
+  return (
+    <>
+      <Header />
+      <Footer />
+    </>
+  );
 }
 
 export default App;
