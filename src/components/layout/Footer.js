@@ -7,6 +7,7 @@ import FooterSocial from '../menu/FooterSocial';
 const Footer = () => {
   return (
     <Flex
+      as="footer"
       backgroundColor="#3E4B64"
       w="full"
       h="248px"

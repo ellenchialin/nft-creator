@@ -1,4 +1,4 @@
-import { Box, Flex, Image } from '@chakra-ui/react';
+import { Link, Flex, Image } from '@chakra-ui/react';
 
 import HeaderNav from '../menu/HeaderNav';
 
@@ -13,9 +13,9 @@ const Header = () => {
       justify="space-between"
       align="center"
     >
-      <Box w="210px">
+      <Link href="#">
         <Image src="assets/LOOTEX.png" alt="Lootex logo" />
-      </Box>
+      </Link>
 
       <HeaderNav />
     </Flex>

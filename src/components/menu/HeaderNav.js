@@ -3,7 +3,7 @@ import { ChevronDownIcon } from '@chakra-ui/icons';
 
 const HeaderNav = () => {
   return (
-    <Flex color="#D0D3DA">
+    <Flex as="nav" color="#D0D3DA">
       <Button variant="ghost" _hover={{ color: 'white' }}>
         Home
       </Button>
