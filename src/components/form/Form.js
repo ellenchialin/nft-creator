@@ -1,11 +1,6 @@
 import { useState, useEffect } from 'react';
-import {
-  Flex,
-  Button,
-  Textarea,
-  FormControl,
-  FormLabel,
-} from '@chakra-ui/react';
+// prettier-ignore
+import { Flex, Button, Textarea, FormControl, FormLabel } from '@chakra-ui/react';
 import { ethers } from 'ethers';
 
 import ChainOptions from './ChainOptions';
@@ -18,7 +13,7 @@ import NFTcreator from '../../utils/NFTcreator.json';
 
 const CONTRACT_ADDRESS = '0x72f1915e2Be8D2CbF1f2C19A3806EEa77fe6F8ef';
 
-const Form = ({ currentAccount }) => {
+const Form = ({ currentAccount, currentChainId }) => {
   const [file, setFile] = useState('');
   const [fileUrl, setFileUrl] = useState('');
   const [name, setName] = useState('');
@@ -74,7 +69,7 @@ const Form = ({ currentAccount }) => {
   return (
     <Flex w="full" justify="space-between" mt="53px">
       <Flex w="600px" direction="column" gap="40px">
-        <ChainOptions />
+        <ChainOptions currentChainId={currentChainId} />
         <FileUpload fileUrl={fileUrl} setFile={setFile} />
         <FormInput
           label="Name"

@@ -1,6 +1,8 @@
 import { Flex, Text, Image } from '@chakra-ui/react';
 
-const ChainCard = ({ name, imageUrl }) => {
+const ChainCard = ({ name, imageUrl, isConnected }) => {
+  const borderStyle = isConnected ? '#fff' : '#3E4B64';
+
   return (
     <Flex
       w="170px"
@@ -9,7 +11,7 @@ const ChainCard = ({ name, imageUrl }) => {
       direction="column"
       justify="center"
       align="center"
-      border="2px solid #3E4B64"
+      border={`2px solid ${borderStyle}`}
     >
       <Flex
         w="56px"
