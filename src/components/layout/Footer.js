@@ -12,6 +12,7 @@ const Footer = () => {
       w="full"
       h="248px"
       position="fixed"
+      zIndex={2}
       bottom="0"
       justify="center"
       align="center"

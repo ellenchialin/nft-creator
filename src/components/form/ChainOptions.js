@@ -12,7 +12,7 @@ const ChainOptions = ({ chainId }) => {
   return (
     <FormControl as="fieldset">
       <FormLabel as="legend" fontSize="14px" fontWeight="bold" color="#FAFAFA">
-        Selected chain based on connected wallet
+        Current chain based on connected wallet
       </FormLabel>
       <Flex gap="16px">
         {CHAIN_LIST.map(chain => (
