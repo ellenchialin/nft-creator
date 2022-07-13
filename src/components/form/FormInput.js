@@ -1,6 +1,6 @@
 import { FormControl, FormLabel, Input } from '@chakra-ui/react';
 
-const FormInput = ({ label, placeHolder, value, setValue }) => {
+const FormInput = ({ label, placeHolder, name, value, setValue }) => {
   return (
     <FormControl>
       <FormLabel as="legend" fontSize="14px" fontWeight="bold" color="#FAFAFA">
@@ -8,6 +8,7 @@ const FormInput = ({ label, placeHolder, value, setValue }) => {
       </FormLabel>
       <Input
         type="text"
+        name={name}
         placeholder={placeHolder}
         backgroundColor="#2B3954"
         color="white"

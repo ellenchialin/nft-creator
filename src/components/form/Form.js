@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Flex } from '@chakra-ui/react';
+import { Flex, Button } from '@chakra-ui/react';
 
 import ChainOptions from './ChainOptions';
 import FileUpload from './FileUpload';
 import FormInput from './FormInput';
+import Attributes from './Attributes';
+import Royalties from './Royalties';
 import Preview from './Preview';
 
 const Form = () => {
@@ -22,21 +24,35 @@ const Form = () => {
         <FormInput
           label="Name"
           placeHolder="e.g. “Ready? Go!”"
+          name="name"
           value={name}
           setValue={setName}
         />
         <FormInput
           label="Description"
           placeHolder="e.g. “First NFT of Party Animals series”"
+          name="description"
           value={description}
           setValue={setDescription}
         />
         <FormInput
           label="Series name (optional)"
           placeHolder="e.g. “Party Animals”"
+          name="seriesName"
           value={seriesName}
           setValue={setSeriesName}
         />
+        <Attributes label="Attributes (optional)" />
+        <Royalties label="Royalties" />
+        <Button
+          w="98px"
+          p="22px"
+          backgroundColor="#3C53A4"
+          color="#D6D9E5"
+          _hover={{ backgroundColor: '#D6D9E5', color: '#3C53A4' }}
+        >
+          Create
+        </Button>
       </Flex>
 
       <Preview image={file} name={name} />
