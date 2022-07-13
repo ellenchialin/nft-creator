@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { ethers } from 'ethers';
 
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
