@@ -50,6 +50,8 @@ const Form = ({ currentAccount }) => {
   useEffect(() => {
     let fileReader,
       isCancel = false;
+
+    setFileUrl('');
     if (file) {
       fileReader = new FileReader();
       fileReader.onload = e => {
@@ -68,8 +70,6 @@ const Form = ({ currentAccount }) => {
       }
     };
   }, [file]);
-
-  console.log('file Url: ', fileUrl);
 
   return (
     <Flex w="full" justify="space-between" mt="53px">

@@ -1,17 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
-import {
-  FormControl,
-  FormLabel,
-  Flex,
-  Image,
-  Text,
-  Button,
-  Input,
-  VisuallyHidden,
-} from '@chakra-ui/react';
+// prettier-ignore
+import { FormControl, FormLabel, Box, Flex, Image, Text, Button, IconButton, Input, VisuallyHidden } from '@chakra-ui/react';
+import { CloseIcon } from '@chakra-ui/icons';
 
 const FileUpload = ({ fileUrl, setFile }) => {
   const fileInputRef = useRef();
+
+  const handleDeleteMedia = () => {
+    setFile('');
+  };
 
   const handleUpload = (uploadedFile, callback) => {
     const fileSize = uploadedFile.size;
@@ -37,7 +34,18 @@ const FileUpload = ({ fileUrl, setFile }) => {
         backgroundColor="#2B3954"
       >
         {fileUrl !== '' ? (
-          <Image rounded="md" fit="cover" src={fileUrl} alt="media preview" />
+          <Box position="relative">
+            <IconButton
+              aria-label="Delete media"
+              icon={<CloseIcon color="#BEC3CD" />}
+              variant="unstyled"
+              position="absolute"
+              right="2"
+              top="2"
+              onClick={handleDeleteMedia}
+            />
+            <Image rounded="md" fit="cover" src={fileUrl} alt="media preview" />
+          </Box>
         ) : (
           <Flex
             fontSize="sm"

@@ -30,7 +30,7 @@ const Preview = ({ currentAccount, fileUrl, name }) => {
                 mb="20px"
               />
             )}
-            <Text fontSize="14px" color="white">
+            <Text fontSize="14px" color="white" fontWeight="bold">
               {name}
             </Text>
             <Flex align="center" gap="5.25px">
