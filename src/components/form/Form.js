@@ -108,7 +108,7 @@ const Form = ({ currentAccount, currentChainId }) => {
           setValue={setSeriesName}
         />
         <Attributes label="Attributes (optional)" />
-        <Royalties label="Royalties" />
+        <Royalties label="Royalties (optional)" />
         <Button
           w="98px"
           p="22px"

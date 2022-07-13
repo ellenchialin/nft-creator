@@ -23,6 +23,7 @@ const Royalties = ({ label }) => {
           border="none"
           py="14px"
           px="16px"
+          disabled
         />
         <InputRightElement
           children={<FaPercent color="#D6D9E5" fontSize="12px" />}
