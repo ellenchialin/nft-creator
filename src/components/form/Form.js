@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { Flex, Button } from '@chakra-ui/react';
+import {
+  Flex,
+  Button,
+  Textarea,
+  FormControl,
+  FormLabel,
+} from '@chakra-ui/react';
 
 import ChainOptions from './ChainOptions';
 import FileUpload from './FileUpload';
@@ -28,13 +34,28 @@ const Form = () => {
           value={name}
           setValue={setName}
         />
-        <FormInput
-          label="Description"
-          placeHolder="e.g. “First NFT of Party Animals series”"
-          name="description"
-          value={description}
-          setValue={setDescription}
-        />
+        <FormControl>
+          <FormLabel
+            as="legend"
+            fontSize="14px"
+            fontWeight="bold"
+            color="#FAFAFA"
+          >
+            Description
+          </FormLabel>
+          <Textarea
+            type="text"
+            name="description"
+            placeHolder="e.g. “First NFT of Party Animals series”"
+            backgroundColor="#2B3954"
+            color="white"
+            border="none"
+            py="14px"
+            px="16px"
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+          />
+        </FormControl>
         <FormInput
           label="Series name (optional)"
           placeHolder="e.g. “Party Animals”"
