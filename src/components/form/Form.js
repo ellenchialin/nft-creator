@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Flex,
   Button,
@@ -18,8 +18,9 @@ import NFTcreator from '../../utils/NFTcreator.json';
 
 const CONTRACT_ADDRESS = '0x72f1915e2Be8D2CbF1f2C19A3806EEa77fe6F8ef';
 
-const Form = () => {
+const Form = ({ currentAccount }) => {
   const [file, setFile] = useState('');
+  const [fileUrl, setFileUrl] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [seriesName, setSeriesName] = useState('');
@@ -46,11 +47,35 @@ const Form = () => {
     }
   };
 
+  useEffect(() => {
+    let fileReader,
+      isCancel = false;
+    if (file) {
+      fileReader = new FileReader();
+      fileReader.onload = e => {
+        const { result } = e.target;
+        if (result && !isCancel) {
+          setFileUrl(result);
+        }
+      };
+      fileReader.readAsDataURL(file);
+    }
+
+    return () => {
+      isCancel = true;
+      if (fileReader && fileReader.readyState === 1) {
+        fileReader.abort();
+      }
+    };
+  }, [file]);
+
+  console.log('file Url: ', fileUrl);
+
   return (
     <Flex w="full" justify="space-between" mt="53px">
       <Flex w="600px" direction="column" gap="40px">
         <ChainOptions />
-        <FileUpload />
+        <FileUpload fileUrl={fileUrl} setFile={setFile} />
         <FormInput
           label="Name"
           placeHolder="e.g. “Ready? Go!”"
@@ -101,7 +126,7 @@ const Form = () => {
         </Button>
       </Flex>
 
-      <Preview image={file} name={name} />
+      <Preview currentAccount={currentAccount} fileUrl={fileUrl} name={name} />
     </Flex>
   );
 };

@@ -3,7 +3,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import PageTitle from '../PageTitle';
 import Form from '../form/Form';
 
-const MainContainer = () => {
+const MainContainer = ({ currentAccount }) => {
   return (
     <Box
       as="main"
@@ -22,7 +22,7 @@ const MainContainer = () => {
         pb="300px"
       >
         <PageTitle title="Create collectible" />
-        <Form />
+        <Form currentAccount={currentAccount} />
       </Flex>
     </Box>
   );

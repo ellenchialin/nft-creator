@@ -1,6 +1,8 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex, Text, Image, Avatar } from '@chakra-ui/react';
 
-const Preview = ({ image, name }) => {
+import { helper } from '../../utils/helper';
+
+const Preview = ({ currentAccount, fileUrl, name }) => {
   return (
     <Flex direction="column">
       <Text fontSize="14px" fontWeight="bold" color="#FAFAFA" mb="8px">
@@ -17,8 +19,27 @@ const Preview = ({ image, name }) => {
         backgroundColor="#2B3954"
         rounded="md"
       >
-        {image !== '' || name !== '' ? (
-          <Text>preview content</Text>
+        {name !== '' ? (
+          <Flex direction="column" gap="5px">
+            {fileUrl !== '' && (
+              <Image
+                rounded="md"
+                fit="cover"
+                src={fileUrl}
+                alt="media preview"
+                mb="20px"
+              />
+            )}
+            <Text fontSize="14px" color="white">
+              {name}
+            </Text>
+            <Flex align="center" gap="5.25px">
+              <Avatar size="xs" />
+              <Text fontSize="10.5px" color="#D0D3DA">
+                {helper.formatDisplayAccount(currentAccount)}
+              </Text>
+            </Flex>
+          </Flex>
         ) : (
           <Text color="#7786A3" fontSize="14px">
             Preview of your new collectible

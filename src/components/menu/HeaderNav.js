@@ -9,6 +9,8 @@ import {
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 
+import { helper } from '../../utils/helper';
+
 const CHAINS_LIST = [
   { id: '0x1', name: 'ETH Mainnet' },
   { id: '0x137', name: 'Polygon' },
@@ -16,12 +18,6 @@ const CHAINS_LIST = [
 ];
 
 const HeaderNav = ({ currentAccount, currentChainId, handleConnectWallet }) => {
-  const formatDisplayAccount = address => {
-    const firstPart = address.slice(0, 6);
-    const SecondPart = address.slice(-4);
-    return `${firstPart}...${SecondPart}`;
-  };
-
   const displayChain = chainId => {
     const chain = CHAINS_LIST.filter(chain => chain.id === chainId);
     return chain[0].name;
@@ -69,7 +65,7 @@ const HeaderNav = ({ currentAccount, currentChainId, handleConnectWallet }) => {
               <Text fontWeight="bold" color="white">
                 MetaMask (Injected)
               </Text>
-              <Text>{formatDisplayAccount(currentAccount)}</Text>
+              <Text>{helper.formatDisplayAccount(currentAccount)}</Text>
             </Flex>
             <Text fontSize="12.8px" color="#617293">
               {displayChain(currentChainId)}

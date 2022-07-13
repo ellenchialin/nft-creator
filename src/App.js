@@ -37,7 +37,10 @@ function App() {
         currentChainId={currentChainId}
         handleConnectWallet={handleConnectWallet}
       />
-      <MainContainer currentChainId={currentChainId} />
+      <MainContainer
+        currentChainId={currentChainId}
+        currentAccount={currentAccount}
+      />
       <Footer />
     </>
   );

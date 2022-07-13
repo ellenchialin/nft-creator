@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   FormControl,
   FormLabel,
@@ -10,16 +10,15 @@ import {
   VisuallyHidden,
 } from '@chakra-ui/react';
 
-const FileUpload = () => {
-  const [imageUrl, setImageUrl] = useState('');
+const FileUpload = ({ fileUrl, setFile }) => {
   const fileInputRef = useRef();
 
-  const handleUpload = (file, callback) => {
-    const fileSize = file.size;
+  const handleUpload = (uploadedFile, callback) => {
+    const fileSize = uploadedFile.size;
     if (fileSize > 1024 ** 2 * 30) {
       alert('File size is over 30 MB. Please try again.');
     } else {
-      callback(file);
+      callback(uploadedFile);
     }
   };
 
@@ -37,8 +36,8 @@ const FileUpload = () => {
         rounded="md"
         backgroundColor="#2B3954"
       >
-        {imageUrl !== '' ? (
-          <Image rounded="md" fit="cover" src={imageUrl} alt="preview image" />
+        {fileUrl !== '' ? (
+          <Image rounded="md" fit="cover" src={fileUrl} alt="media preview" />
         ) : (
           <Flex
             fontSize="sm"
@@ -66,7 +65,7 @@ const FileUpload = () => {
                 id="media"
                 name="media"
                 type="file"
-                onChange={e => handleUpload(e.target.files[0], setImageUrl)}
+                onChange={e => handleUpload(e.target.files[0], setFile)}
               />
             </VisuallyHidden>
           </Flex>
