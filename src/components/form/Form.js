@@ -14,6 +14,7 @@ import NFTcreator from '../../utils/NFTcreator.json';
 
 const CONTRACT_ADDRESS = '0x72f1915e2Be8D2CbF1f2C19A3806EEa77fe6F8ef';
 const PIN_FILE_URL = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
+const PIN_JSON_URL = 'https://api.pinata.cloud/pinning/pinJsonToIPFS';
 
 const Form = ({ currentAccount, currentChainId }) => {
   const [file, setFile] = useState('');
@@ -22,11 +23,13 @@ const Form = ({ currentAccount, currentChainId }) => {
   const [description, setDescription] = useState('');
   const [seriesName, setSeriesName] = useState('');
   const [attributes, setAttributes] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const sendFileToIPFS = async () => {
     try {
       if (file !== '') {
         console.log('sending file to pinata...');
+        setIsLoading(true);
 
         const formData = new FormData();
         formData.append('file', file);
@@ -45,14 +48,48 @@ const Form = ({ currentAccount, currentChainId }) => {
 
         const fileHash = `ipfs://${resFile.data.IpfsHash}`;
         console.log('fileHash: ', fileHash);
+
+        sendJSONtoIPFS(fileHash);
       }
     } catch (error) {
       console.log('Error sending File to IPFS: ');
       console.log(error);
+      setIsLoading(false);
     }
   };
 
-  const handleCreate = async () => {
+  const sendJSONtoIPFS = async ipfsHash => {
+    try {
+      const jsonData = JSON.stringify({
+        name: name,
+        description: description,
+        image: ipfsHash,
+      });
+
+      console.log('jsonData: ', jsonData);
+      console.log('ready to send JSON to pinata...');
+
+      const resJSON = await axios.post(PIN_JSON_URL, jsonData, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + process.env.REACT_APP_PINATA_JWT,
+        },
+      });
+
+      console.log('final: ', `ipfs://${resJSON.data.IpfsHash}`);
+
+      const tokenURI = `ipfs://${resJSON.data.IpfsHash}`;
+      console.log('Token URI: ', tokenURI);
+
+      createNFT(tokenURI);
+    } catch (error) {
+      console.log('Error sending JSON to IPFS: ');
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+
+  const createNFT = async tokenURI => {
     try {
       const { ethereum } = window;
       if (ethereum) {
@@ -65,11 +102,24 @@ const Form = ({ currentAccount, currentChainId }) => {
         );
 
         console.log('connectedContract: ', connectedContract);
+
+        // call contract function
+        console.log('Going to pop wallet now to pay gas...');
+        let nftTxn = await connectedContract.mintByAmount(1, [`${tokenURI}`]);
+
+        await nftTxn;
+        alert(
+          `Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTxn.hash}`
+        );
+        setIsLoading(false);
       } else {
         console.log("Ethereum object doesn't exist!");
+        setIsLoading(false);
       }
     } catch (error) {
+      console.log('Error while creating NFT with contract');
       console.log(error);
+      setIsLoading(false);
     }
   };
 
@@ -147,6 +197,7 @@ const Form = ({ currentAccount, currentChainId }) => {
           color="#D6D9E5"
           _hover={{ backgroundColor: '#D6D9E5', color: '#3C53A4' }}
           onClick={sendFileToIPFS}
+          isLoading={isLoading}
         >
           Create
         </Button>

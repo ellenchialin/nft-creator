@@ -15,6 +15,7 @@ const CHAINS_LIST = [
   { id: '0x1', name: 'ETH Mainnet' },
   { id: '0x137', name: 'Polygon' },
   { id: '0x56', name: 'BNB' },
+  { id: '0x4', name: 'Rinkeby' },
 ];
 
 const HeaderNav = ({ currentAccount, currentChainId, handleConnectWallet }) => {
