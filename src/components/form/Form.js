@@ -7,7 +7,7 @@ import { ethers } from 'ethers';
 import ChainOptions from './ChainOptions';
 import FileUpload from './FileUpload';
 import FormInput from './FormInput';
-import Attributes from './Attributes';
+import AttributeGroup from './AttributeGroup';
 import Royalties from './Royalties';
 import Preview from './Preview';
 import NFTcreator from '../../utils/NFTcreator.json';
@@ -22,7 +22,7 @@ const Form = ({ currentAccount, currentChainId }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [seriesName, setSeriesName] = useState('');
-  const [attributes, setAttributes] = useState([]);
+  const [attributes, setAttributes] = useState([{ id: 1 }]);
   const [isLoading, setIsLoading] = useState(false);
 
   const sendFileToIPFS = async () => {
@@ -61,8 +61,8 @@ const Form = ({ currentAccount, currentChainId }) => {
   const sendJSONtoIPFS = async ipfsHash => {
     try {
       const jsonData = JSON.stringify({
-        name: name,
-        description: description,
+        name: name.trim(),
+        description: description.trim(),
         image: ipfsHash,
       });
 
@@ -188,7 +188,11 @@ const Form = ({ currentAccount, currentChainId }) => {
           value={seriesName}
           setValue={setSeriesName}
         />
-        <Attributes label="Attributes (optional)" />
+        <AttributeGroup
+          label="Attributes (optional)"
+          attributes={attributes}
+          setAttributes={setAttributes}
+        />
         <Royalties label="Royalties (optional)" />
         <Button
           w="98px"
