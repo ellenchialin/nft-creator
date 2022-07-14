@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState, useEffect } from 'react';
 // prettier-ignore
 import { Flex, Button, Textarea, FormControl, FormLabel } from '@chakra-ui/react';
@@ -12,6 +13,7 @@ import Preview from './Preview';
 import NFTcreator from '../../utils/NFTcreator.json';
 
 const CONTRACT_ADDRESS = '0x72f1915e2Be8D2CbF1f2C19A3806EEa77fe6F8ef';
+const PIN_FILE_URL = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
 
 const Form = ({ currentAccount, currentChainId }) => {
   const [file, setFile] = useState('');
@@ -20,6 +22,35 @@ const Form = ({ currentAccount, currentChainId }) => {
   const [description, setDescription] = useState('');
   const [seriesName, setSeriesName] = useState('');
   const [attributes, setAttributes] = useState([]);
+
+  const sendFileToIPFS = async () => {
+    try {
+      if (file !== '') {
+        console.log('sending file to pinata...');
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        console.log('formData :', formData.get('file'));
+
+        const resFile = await axios.post(PIN_FILE_URL, formData, {
+          headers: {
+            pinata_api_key: process.env.REACT_APP_PINATA_API_KEY,
+            pinata_secret_api_key: process.env.REACT_APP_PINATA_API_SECRET,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        console.log('resFile: ', resFile.data);
+
+        const fileHash = `ipfs://${resFile.data.IpfsHash}`;
+        console.log('fileHash: ', fileHash);
+      }
+    } catch (error) {
+      console.log('Error sending File to IPFS: ');
+      console.log(error);
+    }
+  };
 
   const handleCreate = async () => {
     try {
@@ -115,7 +146,7 @@ const Form = ({ currentAccount, currentChainId }) => {
           backgroundColor="#3C53A4"
           color="#D6D9E5"
           _hover={{ backgroundColor: '#D6D9E5', color: '#3C53A4' }}
-          onClick={handleCreate}
+          onClick={sendFileToIPFS}
         >
           Create
         </Button>
