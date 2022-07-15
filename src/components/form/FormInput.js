@@ -16,7 +16,7 @@ const FormInput = ({ label, placeHolder, name, value, setValue }) => {
         py="14px"
         px="16px"
         value={value}
-        onChange={e => setValue(e.target.value)}
+        onChange={e => setValue(e.target.value.trim())}
       />
     </FormControl>
   );

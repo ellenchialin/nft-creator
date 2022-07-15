@@ -1,19 +1,9 @@
-import { useState, useRef } from 'react';
 // prettier-ignore
 import { FormControl, FormLabel, Table, Tbody, TableContainer, Button, Flex, Tr, Td, Input } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 
 const AttributeGroup = ({ label, attributes, setAttributes }) => {
   const handleChange = (id, event) => {
-    // console.log(
-    //   'id: ',
-    //   id,
-    //   'name: ',
-    //   event.target.name,
-    //   'value: ',
-    //   event.target.value
-    // );
-
     const newAttributes = attributes.map(att => {
       if (id === att.id) {
         att[event.target.name] = event.target.value.trim();
@@ -24,17 +14,13 @@ const AttributeGroup = ({ label, attributes, setAttributes }) => {
     setAttributes(newAttributes);
   };
 
-  const handleSave = () => {
-    console.log('click save');
-  };
-
   const handleAddMore = () => {
     setAttributes(prev => [...prev, { id: uuidv4() }]);
   };
 
   const handleDelete = deletedId => {
     if (attributes.length === 1) {
-      setAttributes([{ id: uuidv4(), type: '', value: '' }]);
+      setAttributes([{ id: uuidv4(), trait_type: '', value: '' }]);
     } else {
       const newAttributes = attributes.filter(att => att.id !== deletedId);
       setAttributes(newAttributes);
@@ -50,7 +36,7 @@ const AttributeGroup = ({ label, attributes, setAttributes }) => {
         <Table variant="unstyled">
           <Tbody>
             {attributes.map((att, index) => (
-              <Tr key={index}>
+              <Tr key={att.id}>
                 <Td p="0">
                   <Button
                     variant="unstyled"
@@ -61,7 +47,7 @@ const AttributeGroup = ({ label, attributes, setAttributes }) => {
                   <Input
                     type="text"
                     placeholder="e.g. “Artist name”"
-                    name="type"
+                    name="trait_type"
                     w="270px"
                     backgroundColor="#2B3954"
                     color="white"
@@ -94,7 +80,6 @@ const AttributeGroup = ({ label, attributes, setAttributes }) => {
       </TableContainer>
       <Flex gap="10px">
         <Button onClick={handleAddMore}>Add more</Button>
-        <Button onClick={handleSave}>Save</Button>
       </Flex>
     </FormControl>
   );

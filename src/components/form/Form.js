@@ -24,50 +24,80 @@ const Form = ({ currentAccount, currentChainId }) => {
   const [description, setDescription] = useState('');
   const [seriesName, setSeriesName] = useState('');
   const [attributes, setAttributes] = useState([
-    { id: uuidv4(), type: '', value: '' },
+    { id: uuidv4(), trait_type: '', value: '' },
   ]);
   const [isLoading, setIsLoading] = useState(false);
 
   const sendFileToIPFS = async () => {
     try {
-      if (file !== '') {
-        console.log('sending file to pinata...');
-        setIsLoading(true);
-
-        const formData = new FormData();
-        formData.append('file', file);
-
-        console.log('formData :', formData.get('file'));
-
-        const resFile = await axios.post(PIN_FILE_URL, formData, {
-          headers: {
-            pinata_api_key: process.env.REACT_APP_PINATA_API_KEY,
-            pinata_secret_api_key: process.env.REACT_APP_PINATA_API_SECRET,
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        console.log('resFile: ', resFile.data);
-
-        const fileHash = `ipfs://${resFile.data.IpfsHash}`;
-        console.log('fileHash: ', fileHash);
-
-        sendJSONtoIPFS(fileHash);
+      if (currentAccount === '') {
+        alert('Please connect to wallet (Rinkeby) for testing.');
+        return;
       }
+
+      const requiredData = {
+        name,
+        description,
+        file,
+      };
+
+      if (Object.values(requiredData).some(value => !value)) {
+        alert(
+          'FIle, Name and Description are required. Please check before submit.'
+        );
+        return;
+      }
+
+      let hasDuplicates =
+        attributes.map(att => att.trait_type).length >
+        new Set(attributes.map(att => att.trait_type)).size
+          ? true
+          : false;
+
+      if (attributes.length > 1 && hasDuplicates) {
+        alert(
+          `Attribute's type name can not be the same. Please check before submit.`
+        );
+        return;
+      }
+
+      console.log('sending file to pinata...');
+      setIsLoading(true);
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      console.log('formData :', formData.get('file'));
+
+      const resFile = await axios.post(PIN_FILE_URL, formData, {
+        headers: {
+          pinata_api_key: process.env.REACT_APP_PINATA_API_KEY,
+          pinata_secret_api_key: process.env.REACT_APP_PINATA_API_SECRET,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      console.log('resFile: ', resFile.data);
+
+      const fileHash = `ipfs://${resFile.data.IpfsHash}`;
+      console.log('fileHash: ', fileHash);
+
+      sendJSONtoIPFS(fileHash);
     } catch (error) {
       console.log('Error sending File to IPFS: ');
       console.log(error);
-      setIsLoading(false);
     }
   };
 
   const sendJSONtoIPFS = async ipfsHash => {
     try {
+      const attributesOmittedId = attributes.map(({ id, ...rest }) => rest);
+
       const jsonData = JSON.stringify({
-        name: name.trim(),
-        description: description.trim(),
+        name,
+        description,
         image: ipfsHash,
-        attributes,
+        attributes: attributesOmittedId,
       });
 
       console.log('jsonData: ', jsonData);
@@ -89,7 +119,6 @@ const Form = ({ currentAccount, currentChainId }) => {
     } catch (error) {
       console.log('Error sending JSON to IPFS: ');
       console.log(error);
-      setIsLoading(false);
     }
   };
 
@@ -115,14 +144,18 @@ const Form = ({ currentAccount, currentChainId }) => {
         alert(
           `Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTxn.hash}`
         );
-        setIsLoading(false);
+
+        // reset form
+        setName('');
+        setDescription('');
+        setFile('');
       } else {
         console.log("Ethereum object doesn't exist!");
-        setIsLoading(false);
       }
     } catch (error) {
       console.log('Error while creating NFT with contract');
       console.log(error);
+    } finally {
       setIsLoading(false);
     }
   };
