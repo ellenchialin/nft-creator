@@ -94,8 +94,8 @@ const Form = ({ currentAccount, currentChainId }) => {
       const attributesOmittedId = attributes.map(({ id, ...rest }) => rest);
 
       const jsonData = JSON.stringify({
-        name,
-        description,
+        name: name.trim(),
+        description: description.trim(),
         image: ipfsHash,
         attributes: attributesOmittedId,
       });
@@ -149,6 +149,7 @@ const Form = ({ currentAccount, currentChainId }) => {
         setName('');
         setDescription('');
         setFile('');
+        setAttributes([{ id: uuidv4(), trait_type: '', value: '' }]);
       } else {
         console.log("Ethereum object doesn't exist!");
       }
