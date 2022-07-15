@@ -7,23 +7,26 @@ const Attribute = ({ id, handleDelete }) => {
   const [valueInput, setValueInput] = useState('');
   const [singleAttribute, setSingleAttribute] = useState({});
 
-  const handleChange = e => {
+  const handleChange = (e, index) => {
+    console.log('index: ', index);
+    console.log('target name: ', e.trget.name);
+
     const { name, value } = e.target;
 
-    if (name === 'type') {
-      setTypeInput(value.trim());
-    }
-    if (name === 'value') {
-      setValueInput(value.trim());
-    }
+    // if (name === 'type') {
+    //   setTypeInput(value.trim());
+    // }
+    // if (name === 'value') {
+    //   setValueInput(value.trim());
+    // }
 
-    if (typeInput !== '' && valueInput !== '') {
-      console.log('typeInput: ', typeInput);
-      setSingleAttribute({ [typeInput]: valueInput });
-    }
+    // if (typeInput !== '' && valueInput !== '') {
+    //   console.log('typeInput: ', typeInput);
+    //   setSingleAttribute({ [typeInput]: valueInput });
+    // }
   };
 
-  console.log('id: ', id);
+  // console.log('id: ', id);
 
   return (
     <Tr>
@@ -41,7 +44,6 @@ const Attribute = ({ id, handleDelete }) => {
           border="none"
           py="14px"
           px="16px"
-          onChange={handleChange}
         />
       </Td>
       <Td p="0">
@@ -55,7 +57,6 @@ const Attribute = ({ id, handleDelete }) => {
           border="none"
           py="14px"
           px="16px"
-          onChange={handleChange}
         />
       </Td>
     </Tr>

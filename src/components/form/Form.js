@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 // prettier-ignore
 import { Flex, Button, Textarea, FormControl, FormLabel } from '@chakra-ui/react';
 import { ethers } from 'ethers';
+import { v4 as uuidv4 } from 'uuid';
 
 import ChainOptions from './ChainOptions';
 import FileUpload from './FileUpload';
@@ -22,7 +23,9 @@ const Form = ({ currentAccount, currentChainId }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [seriesName, setSeriesName] = useState('');
-  const [attributes, setAttributes] = useState([{ id: 1 }]);
+  const [attributes, setAttributes] = useState([
+    { id: uuidv4(), type: '', value: '' },
+  ]);
   const [isLoading, setIsLoading] = useState(false);
 
   const sendFileToIPFS = async () => {
@@ -64,6 +67,7 @@ const Form = ({ currentAccount, currentChainId }) => {
         name: name.trim(),
         description: description.trim(),
         image: ipfsHash,
+        attributes,
       });
 
       console.log('jsonData: ', jsonData);
