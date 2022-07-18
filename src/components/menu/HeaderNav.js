@@ -25,7 +25,7 @@ const HeaderNav = ({ currentAccount, currentChainId, handleConnectWallet }) => {
   };
 
   return (
-    <Flex as="nav" color="#D0D3DA">
+    <Flex as="nav" align="center" color="#D0D3DA">
       <Button variant="ghost" _hover={{ color: 'white' }}>
         Home
       </Button>
@@ -42,7 +42,7 @@ const HeaderNav = ({ currentAccount, currentChainId, handleConnectWallet }) => {
           Marketplace
         </MenuButton>
       </Menu>
-      <ButtonGroup gap="4">
+      <ButtonGroup alignItems="center" gap="4">
         <Button
           backgroundColor="#475571"
           fontSize="14px"
@@ -60,13 +60,15 @@ const HeaderNav = ({ currentAccount, currentChainId, handleConnectWallet }) => {
             Connect Wallet
           </Button>
         ) : (
-          <Flex w="400px" align="center" gap="10px">
-            <Avatar size="md" />
-            <Flex w="200px" direction="column">
-              <Text fontWeight="bold" color="white">
-                MetaMask (Injected)
-              </Text>
-              <Text>{helper.formatDisplayAccount(currentAccount)}</Text>
+          <Flex w="400px" align="center" justify="space-between">
+            <Flex gap="2">
+              <Avatar size="md" />
+              <Flex w="200px" direction="column">
+                <Text fontWeight="bold" color="white">
+                  MetaMask (Injected)
+                </Text>
+                <Text>{helper.formatDisplayAccount(currentAccount)}</Text>
+              </Flex>
             </Flex>
             <Text fontSize="12.8px" color="#617293">
               {displayChain(currentChainId)}
