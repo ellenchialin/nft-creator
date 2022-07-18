@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useRef } from 'react';
 // prettier-ignore
 import { FormControl, FormLabel, Box, Flex, Image, Text, Button, IconButton, Input, VisuallyHidden } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';

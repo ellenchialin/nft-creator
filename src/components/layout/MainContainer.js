@@ -1,9 +1,16 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { useState } from 'react';
+// prettier-ignore
+import { Box, Flex, ButtonGroup, Button } from '@chakra-ui/react';
+import { FaFileUpload, FaPlus } from 'react-icons/fa';
 
 import PageTitle from '../PageTitle';
-import Form from '../form/Form';
+import ChainOptions from '../ChainOptions';
+import Form from '../singleMint/Form';
+import BatchForm from '../batchMint/BatchForm';
 
 const MainContainer = ({ currentAccount, currentChainId }) => {
+  const [selectedMintType, setSelectedMintType] = useState(null);
+
   return (
     <Box
       as="main"
@@ -22,7 +29,34 @@ const MainContainer = ({ currentAccount, currentChainId }) => {
         pb="100px"
       >
         <PageTitle title="Create collectible" />
-        <Form currentAccount={currentAccount} currentChainId={currentChainId} />
+        <ChainOptions currentChainId={currentChainId} />
+
+        <ButtonGroup mb="6">
+          <Button
+            colorScheme="linkedin"
+            variant={selectedMintType === 'batch' ? 'solid' : 'outline'}
+            leftIcon={<FaFileUpload />}
+            onClick={() => setSelectedMintType('batch')}
+          >
+            Batch Upload
+          </Button>
+          <Button
+            colorScheme="linkedin"
+            variant={selectedMintType === 'single' ? 'solid' : 'outline'}
+            leftIcon={<FaPlus />}
+            onClick={() => setSelectedMintType('single')}
+          >
+            Create
+          </Button>
+        </ButtonGroup>
+
+        {selectedMintType === 'batch' && <BatchForm />}
+        {selectedMintType === 'single' && (
+          <Form
+            currentAccount={currentAccount}
+            currentChainId={currentChainId}
+          />
+        )}
       </Flex>
     </Box>
   );

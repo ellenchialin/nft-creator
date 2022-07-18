@@ -15,7 +15,7 @@ const ChainOptions = ({ currentChainId }) => {
   };
 
   return (
-    <FormControl as="fieldset">
+    <FormControl as="fieldset" mb="8">
       <FormLabel as="legend" fontSize="14px" fontWeight="bold" color="#FAFAFA">
         Current chain based on connected wallet
       </FormLabel>

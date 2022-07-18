@@ -5,7 +5,6 @@ import { Flex, Button, Textarea, FormControl, FormLabel } from '@chakra-ui/react
 import { ethers } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
 
-import ChainOptions from './ChainOptions';
 import FileUpload from './FileUpload';
 import FormInput from './FormInput';
 import AttributeGroup from './AttributeGroup';
@@ -186,9 +185,8 @@ const Form = ({ currentAccount, currentChainId }) => {
   }, [file]);
 
   return (
-    <Flex w="full" justify="space-between" mt="53px">
+    <Flex w="full" justify="space-between">
       <Flex w="600px" direction="column" gap="40px">
-        <ChainOptions currentChainId={currentChainId} />
         <FileUpload fileUrl={fileUrl} setFile={setFile} />
         <FormInput
           label="Name"
