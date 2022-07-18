@@ -43,7 +43,7 @@ const Form = ({ currentAccount, currentChainId }) => {
 
       if (Object.values(requiredData).some(value => !value)) {
         alert(
-          'FIle, Name and Description are required. Please check before submit.'
+          'File, Name and Description are required. Please check before submit.'
         );
         return;
       }

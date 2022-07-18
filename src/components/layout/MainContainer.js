@@ -19,7 +19,7 @@ const MainContainer = ({ currentAccount, currentChainId }) => {
         direction="column"
         my="0"
         mx="auto"
-        pb="300px"
+        pb="100px"
       >
         <PageTitle title="Create collectible" />
         <Form currentAccount={currentAccount} currentChainId={currentChainId} />

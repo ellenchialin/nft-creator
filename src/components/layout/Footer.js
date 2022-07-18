@@ -10,15 +10,13 @@ const Footer = () => {
       as="footer"
       backgroundColor="#3E4B64"
       w="full"
-      h="248px"
-      position="fixed"
-      zIndex={2}
       bottom="0"
       justify="center"
       align="center"
+      py="50px"
       px="115px"
     >
-      <Flex w="1210px">
+      <Flex w="1210px" direction={{ md: 'column', lg: 'row' }}>
         <FooterInfo />
         <FooterList title="Explore" items={['Home', 'Marketplace', 'Vault']} />
         <FooterList

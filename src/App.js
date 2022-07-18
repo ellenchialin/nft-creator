@@ -30,8 +30,8 @@ function App() {
         setCurrentAccount(account);
         setCurrentChainId(chainId);
       } else {
-        alert('No authorized account found');
-        console.log('No authorized account found');
+        alert('Please connect to wallet (Rinkeby) for testing.');
+        console.log('Please connect to wallet (Rinkeby) for testing.');
       }
     } catch (error) {
       console.log(error);
