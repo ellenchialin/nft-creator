@@ -74,6 +74,7 @@ const FileUpload = ({ fileUrl, setFile }) => {
                 name="media"
                 type="file"
                 onChange={e => handleUpload(e.target.files[0], setFile)}
+                isRequired
               />
             </VisuallyHidden>
           </Flex>
