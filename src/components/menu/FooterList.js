@@ -6,7 +6,7 @@ const FooterList = ({ title, items }) => {
       <Text color="white" fontWeight="bold" mb="23px">
         {title}
       </Text>
-      <Flex direction="column" gap="14px">
+      <Flex direction="column" gap="14px" w="max-content">
         {items.map(item => (
           <Link
             key={item}
@@ -14,6 +14,7 @@ const FooterList = ({ title, items }) => {
             color="#BEC3CD"
             fontSize="14px"
             fontWeight="bold"
+            _hover={{ color: 'white' }}
           >
             {item}
           </Link>

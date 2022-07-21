@@ -16,13 +16,18 @@ const Footer = () => {
       py="50px"
       px="115px"
     >
-      <Flex w="1210px" direction={{ md: 'column', lg: 'row' }}>
+      <Flex w="1210px" direction={{ base: 'column', lg: 'row' }} gap="8">
         <FooterInfo />
-        <FooterList title="Explore" items={['Home', 'Marketplace', 'Vault']} />
-        <FooterList
-          title="More Info"
-          items={['About Lootex', 'What is NFT?', 'Tutorial']}
-        />
+        <Flex gap="8">
+          <FooterList
+            title="Explore"
+            items={['Home', 'Marketplace', 'Vault']}
+          />
+          <FooterList
+            title="More Info"
+            items={['About Lootex', 'What is NFT?', 'Tutorial']}
+          />
+        </Flex>
         <FooterSocial />
       </Flex>
     </Flex>
