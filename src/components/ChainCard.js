@@ -1,6 +1,6 @@
 import { Flex, Text, Image } from '@chakra-ui/react';
 
-const ChainCard = ({ name, imageUrl, isConnected }) => {
+const ChainCard = ({ name, imageUrl, isConnected, handleChangeChain }) => {
   const borderStyle = isConnected ? '#fff' : '#3E4B64';
 
   return (
@@ -12,6 +12,9 @@ const ChainCard = ({ name, imageUrl, isConnected }) => {
       justify="center"
       align="center"
       border={`2px solid ${borderStyle}`}
+      _hover={{ borderColor: 'white' }}
+      cursor="pointer"
+      onClick={handleChangeChain}
     >
       <Flex
         w="56px"

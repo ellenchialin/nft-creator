@@ -18,20 +18,15 @@ function App() {
       }
 
       const chainId = await ethereum.request({ method: 'eth_chainId' });
-      const rinkebyChainId = '0x4';
-      if (chainId !== rinkebyChainId) {
-        alert('Please connected to the Rinkeby Test Network.');
-        return;
-      }
-
       const accounts = await ethereum.request({ method: 'eth_accounts' });
+
       if (accounts.length !== 0) {
         const account = accounts[0];
         setCurrentAccount(account);
         setCurrentChainId(chainId);
       } else {
-        alert('Please connect to wallet (Rinkeby) for testing.');
-        console.log('Please connect to wallet (Rinkeby) for testing.');
+        alert('Please connect to wallet.');
+        console.log('Please connect to wallet.');
       }
     } catch (error) {
       console.log(error);
@@ -51,8 +46,8 @@ function App() {
       });
       const chainId = await ethereum.request({ method: 'eth_chainId' });
 
-      console.log('Connected', accounts[0]);
-      console.log('chainId', chainId);
+      console.log('Connected to account: ', accounts[0]);
+
       setCurrentAccount(accounts[0]);
       setCurrentChainId(chainId);
     } catch (error) {
@@ -73,6 +68,7 @@ function App() {
       />
       <MainContainer
         currentChainId={currentChainId}
+        setCurrentChainId={setCurrentChainId}
         currentAccount={currentAccount}
       />
       <Footer />

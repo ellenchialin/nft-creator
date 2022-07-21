@@ -2,8 +2,12 @@ import { useState } from 'react';
 // prettier-ignore
 import { Flex, TableContainer, Table, Thead, Th, Tbody, Tr, Td, Button, ButtonGroup, Text, Image, Box, Code } from '@chakra-ui/react';
 import Papa from 'papaparse';
+import axios from 'axios';
 
 import BatchUpload from './BatchUpload';
+import FolderUpload from './FolderUpload';
+
+const PIN_FILE_URL = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
 
 const TABLE_HEADERS = [
   'image',
@@ -16,15 +20,50 @@ const TABLE_HEADERS = [
 ];
 
 const BatchForm = () => {
-  // const [file, setFile] = useState(null);
   const [parsedData, setParsedData] = useState([]);
   const [previewData, setPreviewData] = useState([]);
+
+  const generatePreviewData = data => {
+    const formattedData = data.map(item => {
+      const {
+        image,
+        animation_url,
+        name,
+        description,
+        external_url,
+        background_color,
+        ...properties
+      } = item;
+      const imageIPFSHash = image.slice(7);
+      const animationIPFSHash = animation_url.slice(7);
+      const formattedProperties = JSON.stringify(properties)
+        .slice(1, -1)
+        .split(',')
+        .join('\n');
+
+      return {
+        image: `https://minter.mypinata.cloud/ipfs/${imageIPFSHash}`,
+        animation_url: `https://minter.mypinata.cloud/ipfs/${animationIPFSHash}`,
+        name,
+        description,
+        properties: `{\n${formattedProperties}\n}`,
+        external_url,
+        background_color,
+      };
+    });
+
+    setPreviewData(formattedData);
+    setParsedData(data);
+  };
 
   const handleChange = e => {
     Papa.parse(e.target.files[0], {
       header: true,
-      complete: results => {
-        const formattedData = results.data.map(item => {
+      complete: async results => {
+        generatePreviewData(results.data);
+
+        /* Convert csv to JSONs */
+        const jsonFilesArray = results.data.map(item => {
           const {
             image,
             animation_url,
@@ -32,30 +71,63 @@ const BatchForm = () => {
             description,
             external_url,
             background_color,
-            ...properties
+            ...attributes
           } = item;
-          const imageIPFSHash = image.slice(7);
-          const animationIPFSHash = animation_url.slice(7);
-          const formattedProperties = JSON.stringify(properties)
-            .slice(1, -1)
-            .split(',')
-            .join('\n');
 
-          return {
-            image: `https://minter.mypinata.cloud/ipfs/${imageIPFSHash}`,
-            animation_url: `https://minter.mypinata.cloud/ipfs/${animationIPFSHash}`,
-            name,
-            description,
-            properties: `{\n${formattedProperties}\n}`,
-            external_url,
-            background_color,
-          };
+          const formattedProperties = Object.keys(attributes).map(att => ({
+            trait_type: att,
+            value: attributes[att],
+          }));
+
+          const jsonFile = new File(
+            [
+              JSON.stringify({
+                image,
+                animation_url,
+                name,
+                description,
+                attributes: formattedProperties,
+                external_url,
+                background_color,
+              }),
+            ],
+            `${name}.json`,
+            { type: 'application/json' }
+          );
+
+          return jsonFile;
         });
-        console.log('formattedData: ', formattedData);
-        setPreviewData(formattedData);
+        console.log('JSON array: ', jsonFilesArray);
 
-        setParsedData(results.data);
-        console.log('results: ', results.data);
+        const formData = new FormData();
+
+        /* Append JSONs to the same key */
+        for (let i = 0; i < jsonFilesArray.length; i++) {
+          formData.append('file', jsonFilesArray[i]);
+        }
+
+        /* Set Pinata folder name */
+        const metadata = JSON.stringify({
+          name: 'Test with csv file',
+        });
+        formData.append('pinataMetadata', metadata);
+
+        console.log('batchformData: ', [...formData.entries()]);
+
+        try {
+          console.log('sending to pinata...');
+
+          const res = await axios.post(PIN_FILE_URL, formData, {
+            maxBodyLength: 'Infinity',
+            headers: {
+              'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+              Authorization: `Bearer ${process.env.REACT_APP_PINATA_JWT}`,
+            },
+          });
+          console.log('res: ', res.data);
+        } catch (error) {
+          console.log(error);
+        }
       },
     });
   };
@@ -82,8 +154,8 @@ const BatchForm = () => {
                   <Tr key={index}>
                     <Td>
                       <Image
-                        w="24"
-                        h="24"
+                        w="30"
+                        h="30"
                         src={item.image}
                         objectFit="contain"
                       />
@@ -156,7 +228,10 @@ const BatchForm = () => {
           </ButtonGroup>
         </Flex>
       ) : (
-        <BatchUpload handleChange={e => handleChange(e)} />
+        <>
+          <BatchUpload handleChange={e => handleChange(e)} />
+          {/* <FolderUpload /> */}
+        </>
       )}
     </Flex>
   );

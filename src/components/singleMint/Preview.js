@@ -1,6 +1,6 @@
 import { Flex, Text, Image, Avatar } from '@chakra-ui/react';
 
-import { helper } from '../../utils/helper';
+import { formatDisplayAccount } from '../../utils/helper';
 
 const Preview = ({ currentAccount, fileUrl, name }) => {
   return (
@@ -36,7 +36,7 @@ const Preview = ({ currentAccount, fileUrl, name }) => {
             <Flex align="center" gap="5.25px">
               <Avatar size="xs" />
               <Text fontSize="10.5px" color="#D0D3DA">
-                {helper.formatDisplayAccount(currentAccount)}
+                {formatDisplayAccount(currentAccount)}
               </Text>
             </Flex>
           </Flex>

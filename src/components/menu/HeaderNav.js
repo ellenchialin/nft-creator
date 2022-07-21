@@ -1,29 +1,10 @@
-import {
-  Flex,
-  ButtonGroup,
-  Button,
-  Menu,
-  MenuButton,
-  Text,
-  Avatar,
-} from '@chakra-ui/react';
+// prettier-ignore
+import { Flex, ButtonGroup, Button, Menu, MenuButton, Text, Avatar } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 
-import { helper } from '../../utils/helper';
+import { formatDisplayAccount } from '../../utils/helper';
 
-const CHAINS_LIST = [
-  { id: '0x1', name: 'ETH Mainnet' },
-  { id: '0x137', name: 'Polygon' },
-  { id: '0x56', name: 'BNB' },
-  { id: '0x4', name: 'Rinkeby' },
-];
-
-const HeaderNav = ({ currentAccount, currentChainId, handleConnectWallet }) => {
-  const displayChain = chainId => {
-    const chain = CHAINS_LIST.filter(chain => chain.id === chainId);
-    return chain[0].name;
-  };
-
+const HeaderNav = ({ currentAccount, handleConnectWallet }) => {
   return (
     <Flex as="nav" align="center" color="#D0D3DA">
       <Button variant="ghost" _hover={{ color: 'white' }}>
@@ -60,19 +41,14 @@ const HeaderNav = ({ currentAccount, currentChainId, handleConnectWallet }) => {
             Connect Wallet
           </Button>
         ) : (
-          <Flex w="400px" align="center" justify="space-between">
-            <Flex gap="2">
-              <Avatar size="md" />
-              <Flex w="200px" direction="column">
-                <Text fontWeight="bold" color="white">
-                  MetaMask (Injected)
-                </Text>
-                <Text>{helper.formatDisplayAccount(currentAccount)}</Text>
-              </Flex>
+          <Flex w="300px" align="center" justify="center" gap="4">
+            <Avatar size="md" />
+            <Flex w="200px" direction="column">
+              <Text fontWeight="bold" color="white">
+                MetaMask (Injected)
+              </Text>
+              <Text>{formatDisplayAccount(currentAccount)}</Text>
             </Flex>
-            <Text fontSize="12.8px" color="#617293">
-              {displayChain(currentChainId)}
-            </Text>
           </Flex>
         )}
       </ButtonGroup>

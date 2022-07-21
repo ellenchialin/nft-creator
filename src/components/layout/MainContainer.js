@@ -8,7 +8,11 @@ import ChainOptions from '../ChainOptions';
 import Form from '../singleMint/Form';
 import BatchForm from '../batchMint/BatchForm';
 
-const MainContainer = ({ currentAccount, currentChainId }) => {
+const MainContainer = ({
+  currentAccount,
+  currentChainId,
+  setCurrentChainId,
+}) => {
   const [selectedMintType, setSelectedMintType] = useState(null);
 
   return (
@@ -29,7 +33,10 @@ const MainContainer = ({ currentAccount, currentChainId }) => {
         pb="100px"
       >
         <PageTitle title="Create collectible" />
-        <ChainOptions currentChainId={currentChainId} />
+        <ChainOptions
+          currentChainId={currentChainId}
+          setCurrentChainId={setCurrentChainId}
+        />
 
         <ButtonGroup mb="6">
           <Button

@@ -70,9 +70,8 @@ const Form = ({ currentAccount, currentChainId }) => {
 
       const resFile = await axios.post(PIN_FILE_URL, formData, {
         headers: {
-          pinata_api_key: process.env.REACT_APP_PINATA_API_KEY,
-          pinata_secret_api_key: process.env.REACT_APP_PINATA_API_SECRET,
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+          Authorization: `Bearer ${process.env.REACT_APP_PINATA_JWT}`,
         },
       });
 
@@ -105,10 +104,11 @@ const Form = ({ currentAccount, currentChainId }) => {
       const resJSON = await axios.post(PIN_JSON_URL, jsonData, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + process.env.REACT_APP_PINATA_JWT,
+          Authorization: `Bearer ${process.env.REACT_APP_PINATA_JWT}`,
         },
       });
 
+      console.log(resJSON.data);
       console.log('final: ', `ipfs://${resJSON.data.IpfsHash}`);
 
       const tokenURI = `ipfs://${resJSON.data.IpfsHash}`;
