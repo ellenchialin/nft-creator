@@ -12,9 +12,17 @@ const ChainOptions = ({ currentChainId, setCurrentChainId }) => {
   };
 
   const handleChangeChain = async networkName => {
-    if (!window.ethereum) alert('No crypto wallet found');
-
     const { ethereum } = window;
+
+    if (!ethereum) {
+      toast({
+        description: 'Please connect to wallet first.',
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+
     const selectedChain = networks.find(chain => chain.name === networkName);
 
     try {

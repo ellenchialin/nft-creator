@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 // prettier-ignore
-import { Flex, Button, Textarea, FormControl, FormLabel } from '@chakra-ui/react';
+import { Flex, Button, Textarea, FormControl, FormLabel, useDisclosure, useToast, Text, Link } from '@chakra-ui/react';
 import { ethers } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -10,6 +10,7 @@ import FormInput from './FormInput';
 import AttributeGroup from './AttributeGroup';
 import Royalties from './Royalties';
 import Preview from './Preview';
+import AlertModal from '../shared/AlertModal';
 import NFTcreator from '../../utils/NFTcreator.json';
 
 const CONTRACT_ADDRESS = '0x72f1915e2Be8D2CbF1f2C19A3806EEa77fe6F8ef';
@@ -25,12 +26,26 @@ const Form = ({ currentAccount }) => {
   const [attributes, setAttributes] = useState([
     { id: uuidv4(), trait_type: '', value: '' },
   ]);
+  const [alertHeader, setAlertHeader] = useState('');
+  const [alertBody, setAlertBody] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const toast = useToast();
+  const {
+    isOpen: isAlertOpen,
+    onOpen: onAlertOpen,
+    onClose: onAlertClose,
+  } = useDisclosure();
 
   const sendFileToIPFS = async () => {
     try {
       if (currentAccount === '') {
-        alert('Please connect to wallet (Rinkeby) for testing.');
+        toast({
+          description: 'Please connect to wallet first.',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        });
         return;
       }
 
@@ -41,9 +56,11 @@ const Form = ({ currentAccount }) => {
       };
 
       if (Object.values(requiredData).some(value => !value)) {
-        alert(
+        setAlertHeader('Oops.');
+        setAlertBody(
           'File, Name and Description are required. Please check before submit.'
         );
+        onAlertOpen();
         return;
       }
 
@@ -54,9 +71,11 @@ const Form = ({ currentAccount }) => {
           : false;
 
       if (attributes.length > 1 && hasDuplicates) {
-        alert(
-          `Attribute's type name can not be the same. Please check before submit.`
+        setAlertHeader('Oops.');
+        setAlertBody(
+          "Attribute's type name can not be the same. Please check before submit."
         );
+        onAlertOpen();
         return;
       }
 
@@ -82,21 +101,40 @@ const Form = ({ currentAccount }) => {
 
       sendJSONtoIPFS(fileHash);
     } catch (error) {
-      console.log('Error sending File to IPFS: ');
+      toast({
+        description: 'Fail to submit. Please check network and try again.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
       console.log(error);
     }
+  };
+
+  const checkAttributesIsEmpty = attributesArray => {
+    return attributesArray.some(attObject =>
+      Object.values(attObject).some(value => !value)
+    );
   };
 
   const sendJSONtoIPFS = async ipfsHash => {
     try {
       const attributesOmittedId = attributes.map(({ id, ...rest }) => rest);
 
-      const jsonData = JSON.stringify({
-        name: name.trim(),
-        description: description.trim(),
-        image: ipfsHash,
-        attributes: attributesOmittedId,
-      });
+      const isAttributesEmpty = checkAttributesIsEmpty(attributes);
+
+      const jsonData = isAttributesEmpty
+        ? JSON.stringify({
+            name: name.trim(),
+            description: description.trim(),
+            image: ipfsHash,
+          })
+        : JSON.stringify({
+            name: name.trim(),
+            description: description.trim(),
+            image: ipfsHash,
+            attributes: attributesOmittedId,
+          });
 
       console.log('jsonData: ', jsonData);
       console.log('ready to send JSON to pinata...');
@@ -109,14 +147,18 @@ const Form = ({ currentAccount }) => {
       });
 
       console.log(resJSON.data);
-      console.log('final: ', `ipfs://${resJSON.data.IpfsHash}`);
 
       const tokenURI = `ipfs://${resJSON.data.IpfsHash}`;
       console.log('Token URI: ', tokenURI);
 
       createNFT(tokenURI);
     } catch (error) {
-      console.log('Error sending JSON to IPFS: ');
+      toast({
+        description: 'Fail to submit. Please check network and try again.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
       console.log(error);
     }
   };
@@ -140,9 +182,22 @@ const Form = ({ currentAccount }) => {
         let nftTxn = await connectedContract.mintByAmount(1, [`${tokenURI}`]);
 
         await nftTxn;
-        alert(
-          `Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTxn.hash}`
+
+        setAlertHeader('Hooray 🚀');
+        setAlertBody(
+          <Text>
+            See transaction at{' '}
+            <Link
+              href={`https://rinkeby.etherscan.io/tx/${nftTxn.hash}`}
+              color="linkedin.600"
+              isExternal
+            >
+              here
+            </Link>
+            .
+          </Text>
         );
+        onAlertOpen();
 
         // reset form
         setName('');
@@ -150,10 +205,20 @@ const Form = ({ currentAccount }) => {
         setFile('');
         setAttributes([{ id: uuidv4(), trait_type: '', value: '' }]);
       } else {
-        console.log("Ethereum object doesn't exist!");
+        toast({
+          description: 'Please connect to wallet first and try again.',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
       }
     } catch (error) {
-      console.log('Error while creating NFT with contract');
+      toast({
+        description: 'Fail to submit. Please check network and try again.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
       console.log(error);
     } finally {
       setIsLoading(false);
@@ -244,6 +309,13 @@ const Form = ({ currentAccount }) => {
       </Flex>
 
       <Preview currentAccount={currentAccount} fileUrl={fileUrl} name={name} />
+
+      <AlertModal
+        isAlertOpen={isAlertOpen}
+        onAlertClose={onAlertClose}
+        header={alertHeader}
+        body={alertBody}
+      />
     </Flex>
   );
 };

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useToast } from '@chakra-ui/react';
 
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
@@ -8,12 +9,19 @@ function App() {
   const [currentAccount, setCurrentAccount] = useState('');
   const [currentChainId, setCurrentChainId] = useState('');
 
+  const toast = useToast();
+
   const checkIfWalletIsConnected = async () => {
     try {
       const { ethereum } = window;
 
       if (!ethereum) {
-        alert('Please make sure you have ＭetaＭask.');
+        toast({
+          description: 'Please connect to wallet first.',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        });
         return;
       }
 
@@ -25,11 +33,20 @@ function App() {
         setCurrentAccount(account);
         setCurrentChainId(chainId);
       } else {
-        alert('Please connect to wallet.');
-        console.log('Please connect to wallet.');
+        toast({
+          description: 'Please connect to wallet first.',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        });
       }
     } catch (error) {
-      console.log(error);
+      toast({
+        description: 'Something went wrong. Please try again.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
@@ -37,7 +54,12 @@ function App() {
     try {
       const { ethereum } = window;
       if (!ethereum) {
-        alert('Please make sure you have ＭetaＭask.');
+        toast({
+          description: 'No crypto wallet found.',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        });
         return;
       }
 
@@ -51,6 +73,14 @@ function App() {
       setCurrentAccount(accounts[0]);
       setCurrentChainId(chainId);
     } catch (error) {
+      if (error.code === 4001) {
+        toast({
+          description: 'Connect to MetaMask has been cancelled.',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
       console.log(error);
     }
   };
