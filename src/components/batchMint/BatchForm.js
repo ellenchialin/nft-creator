@@ -102,9 +102,9 @@ const BatchForm = () => {
         const formData = new FormData();
 
         /* Append JSONs to the same key */
-        for (let i = 0; i < jsonFilesArray.length; i++) {
-          formData.append('file', jsonFilesArray[i]);
-        }
+        Array.from(jsonFilesArray).forEach(file => {
+          formData.append('file', file);
+        });
 
         /* Set Pinata folder name */
         const metadata = JSON.stringify({
@@ -112,22 +112,22 @@ const BatchForm = () => {
         });
         formData.append('pinataMetadata', metadata);
 
-        console.log('batchformData: ', [...formData.entries()]);
+        console.log('formData from CSV file upload: ', [...formData.entries()]);
 
-        try {
-          console.log('sending to pinata...');
+        // try {
+        //   console.log('sending to pinata...');
 
-          const res = await axios.post(PIN_FILE_URL, formData, {
-            maxBodyLength: 'Infinity',
-            headers: {
-              'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-              Authorization: `Bearer ${process.env.REACT_APP_PINATA_JWT}`,
-            },
-          });
-          console.log('res: ', res.data);
-        } catch (error) {
-          console.log(error);
-        }
+        //   const res = await axios.post(PIN_FILE_URL, formData, {
+        //     maxBodyLength: 'Infinity',
+        //     headers: {
+        //       'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+        //       Authorization: `Bearer ${process.env.REACT_APP_PINATA_JWT}`,
+        //     },
+        //   });
+        //   console.log('res: ', res.data);
+        // } catch (error) {
+        //   console.log(error);
+        // }
       },
     });
   };
@@ -230,7 +230,7 @@ const BatchForm = () => {
       ) : (
         <>
           <BatchUpload handleChange={e => handleChange(e)} />
-          {/* <FolderUpload /> */}
+          <FolderUpload />
         </>
       )}
     </Flex>

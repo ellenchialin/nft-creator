@@ -64,7 +64,7 @@ export const networks = [
       ],
       blockExplorerUrls: ['https://bscscan.com'],
     },
-    displayName: 'BNB',
+    displayName: 'BSC',
     imageUrl: '/assets/binance-coin-bnb.png',
   },
   {

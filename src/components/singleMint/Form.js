@@ -16,7 +16,7 @@ const CONTRACT_ADDRESS = '0x72f1915e2Be8D2CbF1f2C19A3806EEa77fe6F8ef';
 const PIN_FILE_URL = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
 const PIN_JSON_URL = 'https://api.pinata.cloud/pinning/pinJsonToIPFS';
 
-const Form = ({ currentAccount, currentChainId }) => {
+const Form = ({ currentAccount }) => {
   const [file, setFile] = useState('');
   const [fileUrl, setFileUrl] = useState('');
   const [name, setName] = useState('');

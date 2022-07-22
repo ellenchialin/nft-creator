@@ -59,10 +59,7 @@ const MainContainer = ({
 
         {selectedMintType === 'batch' && <BatchForm />}
         {selectedMintType === 'single' && (
-          <Form
-            currentAccount={currentAccount}
-            currentChainId={currentChainId}
-          />
+          <Form currentAccount={currentAccount} />
         )}
       </Flex>
     </Box>

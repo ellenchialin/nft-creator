@@ -1,42 +1,38 @@
-import { FormControl, FormLabel, Flex } from '@chakra-ui/react';
+import { FormControl, FormLabel, Flex, useToast } from '@chakra-ui/react';
 
 import ChainCard from './ChainCard';
 import { networks } from '../utils/helper';
 
 const ChainOptions = ({ currentChainId, setCurrentChainId }) => {
+  const toast = useToast();
+
   const checkConnectedChain = id => {
     const isConnected = id === currentChainId;
     return isConnected;
   };
 
   const handleChangeChain = async networkName => {
-    console.log(`Changing to ${networkName}...`);
+    if (!window.ethereum) alert('No crypto wallet found');
 
     const { ethereum } = window;
-
-    const selectedChainId = networks.find(chain => chain.name === networkName)
-      .params.chainId;
+    const selectedChain = networks.find(chain => chain.name === networkName);
 
     try {
       await ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: selectedChainId }],
+        method: 'wallet_addEthereumChain',
+        params: [
+          {
+            ...selectedChain.params,
+          },
+        ],
       });
     } catch (switchError) {
-      if (switchError.code === 4902) {
-        try {
-          await ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-              {
-                ...networks[networkName].params,
-              },
-            ],
-          });
-        } catch (error) {
-          alert('User rejected the request.');
-        }
-      }
+      toast({
+        description: 'Switch network has been cancelled.',
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
     } finally {
       checkNetwork();
     }
@@ -44,13 +40,8 @@ const ChainOptions = ({ currentChainId, setCurrentChainId }) => {
 
   const checkNetwork = async () => {
     const { ethereum } = window;
-
-    if (!ethereum) {
-      alert('Please make sure you have ＭetaＭask.');
-      return;
-    }
-
     const chainId = await ethereum.request({ method: 'eth_chainId' });
+
     setCurrentChainId(chainId);
   };
 

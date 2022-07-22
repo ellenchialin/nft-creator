@@ -27,7 +27,7 @@ const FolderUpload = () => {
     });
     formData.append('pinataOptions', options);
 
-    console.log('formData: ', [...formData.entries()]);
+    console.log('formData from folder upload: ', [...formData.entries()]);
 
     // try {
     //   const res = await axios.post(
