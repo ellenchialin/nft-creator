@@ -2,6 +2,7 @@
 import { Flex, ButtonGroup, Button, Menu, MenuButton, Text, Avatar } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 
+import StyledAvatar from './StyledAvatar';
 import { formatDisplayAccount } from '../../utils/helper';
 
 const HeaderNav = ({ currentAccount, handleConnectWallet }) => {
@@ -42,7 +43,7 @@ const HeaderNav = ({ currentAccount, handleConnectWallet }) => {
           </Button>
         ) : (
           <Flex w="300px" align="center" justify="center" gap="4">
-            <Avatar size="md" />
+            <StyledAvatar currentAccount={currentAccount} />
             <Flex w="200px" direction="column">
               <Text fontWeight="bold" color="white">
                 MetaMask (Injected)
