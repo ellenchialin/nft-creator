@@ -1,9 +1,12 @@
+import { useContext } from 'react';
 import { FormControl, FormLabel, Flex, useToast } from '@chakra-ui/react';
 
+import { UserContext } from '../contexts/UserContext';
 import ChainCard from './ChainCard';
 import { networks } from '../utils/helper';
 
-const ChainOptions = ({ currentChainId, setCurrentChainId }) => {
+const ChainOptions = () => {
+  const { currentChainId, setCurrentChainId } = useContext(UserContext);
   const toast = useToast();
 
   const checkConnectedChain = id => {

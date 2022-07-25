@@ -8,7 +8,7 @@ import ChainOptions from '../ChainOptions';
 import Form from '../singleMint/Form';
 import BatchForm from '../batchMint/BatchForm';
 
-const MainContainer = ({ currentChainId, setCurrentChainId }) => {
+const MainContainer = () => {
   const [selectedERCStandard, setSelectedERCStandard] = useState(null);
   const [selectedMintType, setSelectedMintType] = useState(null);
 
@@ -30,10 +30,7 @@ const MainContainer = ({ currentChainId, setCurrentChainId }) => {
         pb="100px"
       >
         <PageTitle title="Create collectible" />
-        <ChainOptions
-          currentChainId={currentChainId}
-          setCurrentChainId={setCurrentChainId}
-        />
+        <ChainOptions />
 
         <ButtonGroup mb="6">
           <Button
