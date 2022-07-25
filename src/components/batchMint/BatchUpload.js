@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 // prettier-ignore
-import { Flex, Text, Icon, VisuallyHidden, Input, FormControl, FormLabel } from '@chakra-ui/react';
+import { Flex, Text, Icon, VisuallyHidden, Input, FormControl, FormLabel, Link } from '@chakra-ui/react';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 
 const BatchUpload = ({ handleChange }) => {
@@ -41,6 +41,9 @@ const BatchUpload = ({ handleChange }) => {
           </VisuallyHidden>
         </Flex>
       </Flex>
+      <Link href="/assets/example.csv" color="linkedin.500" download>
+        Download example.csv
+      </Link>
     </FormControl>
   );
 };

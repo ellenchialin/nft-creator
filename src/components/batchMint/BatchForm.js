@@ -5,7 +5,6 @@ import Papa from 'papaparse';
 import axios from 'axios';
 
 import BatchUpload from './BatchUpload';
-import FolderUpload from './FolderUpload';
 
 const PIN_FILE_URL = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
 
@@ -230,7 +229,6 @@ const BatchForm = () => {
       ) : (
         <>
           <BatchUpload handleChange={e => handleChange(e)} />
-          <FolderUpload />
         </>
       )}
     </Flex>
