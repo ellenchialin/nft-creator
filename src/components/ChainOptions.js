@@ -25,6 +25,25 @@ const ChainOptions = ({ currentChainId, setCurrentChainId }) => {
 
     const selectedChain = networks.find(chain => chain.name === networkName);
 
+    if (networkName === 'eth' || networkName === 'rinkeby') {
+      try {
+        await ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: selectedChain.params.chainId }],
+        });
+        return;
+      } catch (error) {
+        toast({
+          description: 'Switch network has been cancelled.',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        });
+      } finally {
+        checkNetwork();
+      }
+    }
+
     try {
       await ethereum.request({
         method: 'wallet_addEthereumChain',
@@ -34,7 +53,7 @@ const ChainOptions = ({ currentChainId, setCurrentChainId }) => {
           },
         ],
       });
-    } catch (switchError) {
+    } catch (error) {
       toast({
         description: 'Switch network has been cancelled.',
         status: 'warning',
@@ -49,7 +68,6 @@ const ChainOptions = ({ currentChainId, setCurrentChainId }) => {
   const checkNetwork = async () => {
     const { ethereum } = window;
     const chainId = await ethereum.request({ method: 'eth_chainId' });
-
     setCurrentChainId(chainId);
   };
 
