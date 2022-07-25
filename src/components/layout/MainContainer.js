@@ -8,11 +8,8 @@ import ChainOptions from '../ChainOptions';
 import Form from '../singleMint/Form';
 import BatchForm from '../batchMint/BatchForm';
 
-const MainContainer = ({
-  currentAccount,
-  currentChainId,
-  setCurrentChainId,
-}) => {
+const MainContainer = ({ currentChainId, setCurrentChainId }) => {
+  const [selectedERCStandard, setSelectedERCStandard] = useState(null);
   const [selectedMintType, setSelectedMintType] = useState(null);
 
   return (
@@ -41,25 +38,44 @@ const MainContainer = ({
         <ButtonGroup mb="6">
           <Button
             colorScheme="linkedin"
-            variant={selectedMintType === 'batch' ? 'solid' : 'outline'}
-            leftIcon={<FaFileUpload />}
-            onClick={() => setSelectedMintType('batch')}
+            variant={selectedERCStandard === '721' ? 'solid' : 'outline'}
+            onClick={() => setSelectedERCStandard('721')}
           >
-            Batch Upload
+            ERC721
           </Button>
           <Button
             colorScheme="linkedin"
-            variant={selectedMintType === 'single' ? 'solid' : 'outline'}
-            leftIcon={<FaPlus />}
-            onClick={() => setSelectedMintType('single')}
+            variant={selectedERCStandard === '1155' ? 'solid' : 'outline'}
+            onClick={() => setSelectedERCStandard('1155')}
           >
-            Create
+            ERC1155
           </Button>
         </ButtonGroup>
 
+        {selectedERCStandard && (
+          <ButtonGroup mb="6">
+            <Button
+              colorScheme="linkedin"
+              variant={selectedMintType === 'batch' ? 'solid' : 'outline'}
+              leftIcon={<FaFileUpload />}
+              onClick={() => setSelectedMintType('batch')}
+            >
+              Batch Upload
+            </Button>
+            <Button
+              colorScheme="linkedin"
+              variant={selectedMintType === 'single' ? 'solid' : 'outline'}
+              leftIcon={<FaPlus />}
+              onClick={() => setSelectedMintType('single')}
+            >
+              Mint
+            </Button>
+          </ButtonGroup>
+        )}
+
         {selectedMintType === 'batch' && <BatchForm />}
         {selectedMintType === 'single' && (
-          <Form currentAccount={currentAccount} />
+          <Form selectedERCStandard={selectedERCStandard} />
         )}
       </Flex>
     </Box>

@@ -1,8 +1,12 @@
+import { useContext } from 'react';
 import { Flex, Text, Image, Avatar } from '@chakra-ui/react';
 
+import { UserContext } from '../../contexts/UserContext';
 import { formatDisplayAccount } from '../../utils/helper';
 
-const Preview = ({ currentAccount, fileUrl, name }) => {
+const Preview = ({ fileUrl, name }) => {
+  const { currentAccount } = useContext(UserContext);
+
   return (
     <Flex direction="column">
       <Text fontSize="14px" fontWeight="bold" color="#FAFAFA" mb="8px">

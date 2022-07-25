@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 
-const StyledAvatar = ({ currentAccount }) => {
+import { UserContext } from '../../contexts/UserContext';
+
+const StyledAvatar = () => {
+  const { currentAccount } = useContext(UserContext);
   return <Jazzicon diameter={40} seed={jsNumberForAddress(currentAccount)} />;
 };
 

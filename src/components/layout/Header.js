@@ -2,7 +2,7 @@ import { Link, Flex, Image } from '@chakra-ui/react';
 
 import HeaderNav from '../menu/HeaderNav';
 
-const Header = ({ currentAccount, currentChainId, handleConnectWallet }) => {
+const Header = ({ currentChainId }) => {
   return (
     <Flex
       backgroundColor="rgba(51, 65, 91, 0.96)"
@@ -17,11 +17,7 @@ const Header = ({ currentAccount, currentChainId, handleConnectWallet }) => {
         <Image src="assets/LOOTEX.png" alt="Lootex logo" />
       </Link>
 
-      <HeaderNav
-        currentAccount={currentAccount}
-        currentChainId={currentChainId}
-        handleConnectWallet={handleConnectWallet}
-      />
+      <HeaderNav currentChainId={currentChainId} />
     </Flex>
   );
 };

@@ -1,11 +1,15 @@
+import { useContext } from 'react';
 // prettier-ignore
-import { Flex, ButtonGroup, Button, Menu, MenuButton, Text, Avatar } from '@chakra-ui/react';
+import { Flex, ButtonGroup, Button, Menu, MenuButton, Text } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 
 import StyledAvatar from './StyledAvatar';
 import { formatDisplayAccount } from '../../utils/helper';
+import { UserContext } from '../../contexts/UserContext';
 
-const HeaderNav = ({ currentAccount, handleConnectWallet }) => {
+const HeaderNav = () => {
+  const { currentAccount, connectWallet } = useContext(UserContext);
+
   return (
     <Flex as="nav" align="center" color="#D0D3DA">
       <Button variant="ghost" _hover={{ color: 'white' }}>
@@ -32,18 +36,9 @@ const HeaderNav = ({ currentAccount, handleConnectWallet }) => {
         >
           Create
         </Button>
-        {currentAccount === '' ? (
-          <Button
-            backgroundColor="#3C53A4"
-            fontSize="14px"
-            _hover={{ color: '#3C53A4', bg: '#D0D3DA' }}
-            onClick={handleConnectWallet}
-          >
-            Connect Wallet
-          </Button>
-        ) : (
+        {currentAccount ? (
           <Flex w="300px" align="center" justify="center" gap="4">
-            <StyledAvatar currentAccount={currentAccount} />
+            <StyledAvatar />
             <Flex w="200px" direction="column">
               <Text fontWeight="bold" color="white">
                 MetaMask (Injected)
@@ -51,6 +46,15 @@ const HeaderNav = ({ currentAccount, handleConnectWallet }) => {
               <Text>{formatDisplayAccount(currentAccount)}</Text>
             </Flex>
           </Flex>
+        ) : (
+          <Button
+            backgroundColor="#3C53A4"
+            fontSize="14px"
+            _hover={{ color: '#3C53A4', bg: '#D0D3DA' }}
+            onClick={connectWallet}
+          >
+            Connect Wallet
+          </Button>
         )}
       </ButtonGroup>
     </Flex>
