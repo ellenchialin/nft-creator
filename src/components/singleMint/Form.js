@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { useState, useEffect, useContext } from 'react';
 // prettier-ignore
-import { Flex, Button, Textarea, FormControl, FormLabel, useDisclosure, useToast, Text, Link } from '@chakra-ui/react';
+import { Flex, Button, Textarea, Input, FormControl, FormLabel, useDisclosure, useToast, Text, Link } from '@chakra-ui/react';
 import { ethers } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
 
 import { UserContext } from '../../contexts/UserContext';
 import FileUpload from './FileUpload';
-import FormInput from './FormInput';
+import TextInput from './TextInput';
 import AttributeGroup from './AttributeGroup';
 import Royalties from './Royalties';
 import Preview from './Preview';
@@ -27,7 +27,8 @@ const Form = ({ selectedERCStandard }) => {
   const [fileUrl, setFileUrl] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [seriesName, setSeriesName] = useState('');
+  const [initialSupply, setInitialSupply] = useState(1);
+  // const [seriesName, setSeriesName] = useState('');
   const [attributes, setAttributes] = useState([
     { id: uuidv4(), trait_type: '', value: '' },
   ]);
@@ -294,7 +295,7 @@ const Form = ({ selectedERCStandard }) => {
     <Flex w="full" justify="space-between">
       <Flex w="600px" direction="column" gap="40px">
         <FileUpload fileUrl={fileUrl} setFile={setFile} />
-        <FormInput
+        <TextInput
           label="Name"
           placeHolder="e.g. “Ready? Go!”"
           name="name"
@@ -323,13 +324,36 @@ const Form = ({ selectedERCStandard }) => {
             onChange={e => setDescription(e.target.value)}
           />
         </FormControl>
-        <FormInput
+        {/* <TextInput
           label="Series name (optional)"
           placeHolder="e.g. “Party Animals”"
           name="seriesName"
           value={seriesName}
           setValue={setSeriesName}
-        />
+        /> */}
+        {selectedERCStandard === '1155' && (
+          <FormControl>
+            <FormLabel
+              as="legend"
+              fontSize="14px"
+              fontWeight="bold"
+              color="#FAFAFA"
+            >
+              Initial Supply
+            </FormLabel>
+            <Input
+              type="number"
+              name="initialSupply"
+              backgroundColor="#2B3954"
+              color="white"
+              border="none"
+              py="14px"
+              px="16px"
+              value={initialSupply}
+              onChange={e => setInitialSupply(e.target.value)}
+            />
+          </FormControl>
+        )}
         <AttributeGroup
           label="Attributes (optional)"
           attributes={attributes}

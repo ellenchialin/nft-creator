@@ -1,6 +1,6 @@
 import { FormControl, FormLabel, Input } from '@chakra-ui/react';
 
-const FormInput = ({ label, placeHolder, name, value, setValue }) => {
+const TextInput = ({ label, placeHolder, name, value, setValue }) => {
   return (
     <FormControl>
       <FormLabel as="legend" fontSize="14px" fontWeight="bold" color="#FAFAFA">
@@ -22,4 +22,4 @@ const FormInput = ({ label, placeHolder, name, value, setValue }) => {
   );
 };
 
-export default FormInput;
+export default TextInput;

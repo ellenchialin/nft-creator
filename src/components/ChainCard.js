@@ -28,7 +28,6 @@ const ChainCard = ({ name, imageUrl, isConnected, handleChangeChain }) => {
         <Image src={imageUrl} />
       </Flex>
       <Text color="white">{name}</Text>
-      <Text color="#617293">ERC-721</Text>
     </Flex>
   );
 };

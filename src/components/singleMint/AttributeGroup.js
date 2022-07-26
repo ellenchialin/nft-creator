@@ -33,22 +33,19 @@ const AttributeGroup = ({ label, attributes, setAttributes }) => {
         {label}
       </FormLabel>
       <TableContainer mb="4">
-        <Table variant="unstyled">
+        <Table
+          variant="unstyled"
+          css={{ borderCollapse: 'separate', borderSpacing: '0 10px' }}
+        >
           <Tbody>
-            {attributes.map((att, index) => (
+            {attributes.map(att => (
               <Tr key={att.id}>
                 <Td p="0">
-                  <Button
-                    variant="unstyled"
-                    onClick={() => handleDelete(att.id)}
-                  >
-                    X
-                  </Button>
                   <Input
                     type="text"
                     placeholder="e.g. “Artist name”"
                     name="trait_type"
-                    w="270px"
+                    w="260px"
                     backgroundColor="#2B3954"
                     color="white"
                     border="none"
@@ -63,7 +60,7 @@ const AttributeGroup = ({ label, attributes, setAttributes }) => {
                     type="text"
                     placeholder="e.g. “David”"
                     name="value"
-                    w="270px"
+                    w="260px"
                     backgroundColor="#2B3954"
                     color="white"
                     border="none"
@@ -73,6 +70,13 @@ const AttributeGroup = ({ label, attributes, setAttributes }) => {
                     onChange={event => handleChange(att.id, event)}
                   />
                 </Td>
+                <Button
+                  variant="unstyled"
+                  _hover={{ color: 'white' }}
+                  onClick={() => handleDelete(att.id)}
+                >
+                  X
+                </Button>
               </Tr>
             ))}
           </Tbody>

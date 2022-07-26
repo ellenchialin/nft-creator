@@ -70,7 +70,9 @@ const MainContainer = () => {
           </ButtonGroup>
         )}
 
-        {selectedMintType === 'batch' && <BatchForm />}
+        {selectedMintType === 'batch' && (
+          <BatchForm selectedERCStandard={selectedERCStandard} />
+        )}
         {selectedMintType === 'single' && (
           <Form selectedERCStandard={selectedERCStandard} />
         )}

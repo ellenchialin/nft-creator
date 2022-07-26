@@ -73,6 +73,7 @@ const FileUpload = ({ fileUrl, setFile }) => {
                 id="media"
                 name="media"
                 type="file"
+                accept="image/*,video/*"
                 onChange={e => handleUpload(e.target.files[0], setFile)}
                 isRequired
               />
