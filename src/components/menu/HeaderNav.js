@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { Flex, ButtonGroup, Button, Menu, MenuButton, Text } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 
-import StyledAvatar from './StyledAvatar';
+import StyledAvatar from '../shared/StyledAvatar';
 import { formatDisplayAccount } from '../../utils/helper';
 import { UserContext } from '../../contexts/UserContext';
 
@@ -38,7 +38,7 @@ const HeaderNav = () => {
         </Button>
         {currentAccount ? (
           <Flex w="300px" align="center" justify="center" gap="4">
-            <StyledAvatar />
+            <StyledAvatar size="large" />
             <Flex w="200px" direction="column">
               <Text fontWeight="bold" color="white">
                 MetaMask (Injected)
