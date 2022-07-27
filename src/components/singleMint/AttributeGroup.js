@@ -69,14 +69,14 @@ const AttributeGroup = ({ label, attributes, setAttributes }) => {
                     value={att.value}
                     onChange={event => handleChange(att.id, event)}
                   />
+                  <Button
+                    variant="unstyled"
+                    _hover={{ color: 'white' }}
+                    onClick={() => handleDelete(att.id)}
+                  >
+                    X
+                  </Button>
                 </Td>
-                <Button
-                  variant="unstyled"
-                  _hover={{ color: 'white' }}
-                  onClick={() => handleDelete(att.id)}
-                >
-                  X
-                </Button>
               </Tr>
             ))}
           </Tbody>

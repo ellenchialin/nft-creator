@@ -16,7 +16,7 @@ import NFTcreator721 from '../../utils/NFTcreator721.json';
 import NFTcreator1155 from '../../utils/NFTcreator1155.json';
 
 const CONTRACT_ADDRESS_721 = '0x72f1915e2Be8D2CbF1f2C19A3806EEa77fe6F8ef';
-const CONTRACT_ADDRESS_1155 = '0x84B30223e05aE208cfb1AC6b0eb9Df8f25a2d424';
+const CONTRACT_ADDRESS_1155 = '0x921E32120AE7F7794CEC921DdB66baC4593E5608';
 const PIN_FILE_URL = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
 const PIN_JSON_URL = 'https://api.pinata.cloud/pinning/pinJsonToIPFS';
 
@@ -42,8 +42,6 @@ const Form = ({ selectedERCStandard }) => {
     onOpen: onAlertOpen,
     onClose: onAlertClose,
   } = useDisclosure();
-
-  console.log('selectedERCStandard: ', selectedERCStandard);
 
   const sendFileToIPFS = async () => {
     try {
@@ -177,17 +175,27 @@ const Form = ({ selectedERCStandard }) => {
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
-        const connectedContract = new ethers.Contract(
-          CONTRACT_ADDRESS_721,
-          NFTcreator721.abi,
-          signer
-        );
+        const connectedContract =
+          selectedERCStandard === '721'
+            ? new ethers.Contract(
+                CONTRACT_ADDRESS_721,
+                NFTcreator721.abi,
+                signer
+              )
+            : new ethers.Contract(
+                CONTRACT_ADDRESS_1155,
+                NFTcreator1155.abi,
+                signer
+              );
 
         console.log('connectedContract: ', connectedContract);
 
         // call contract function
         console.log('Going to pop wallet now to pay gas...');
-        let nftTxn = await connectedContract.mintByAmount(1, [`${tokenURI}`]);
+        let nftTxn =
+          selectedERCStandard === '721'
+            ? await connectedContract.mintByAmount(1, [`${tokenURI}`])
+            : await connectedContract.mintByAmount(initialSupply, 0, tokenURI);
 
         await nftTxn;
 
@@ -212,6 +220,7 @@ const Form = ({ selectedERCStandard }) => {
         setDescription('');
         setFile('');
         setAttributes([{ id: uuidv4(), trait_type: '', value: '' }]);
+        setInitialSupply(1);
       } else {
         toast({
           description: 'Please connect to wallet first and try again.',
@@ -228,40 +237,6 @@ const Form = ({ selectedERCStandard }) => {
         isClosable: true,
       });
       console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const test1155 = async (amount, tokenId) => {
-    try {
-      const { ethereum } = window;
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const signer = provider.getSigner();
-      const connectedContract = new ethers.Contract(
-        CONTRACT_ADDRESS_1155,
-        NFTcreator1155.abi,
-        signer
-      );
-
-      console.log('connectedContract: ', connectedContract);
-
-      // call contract function
-      console.log('Going to pop wallet now to pay gas...');
-      let nftTxn = await connectedContract.mintByAmount(amount, tokenId);
-
-      await nftTxn;
-
-      console.log('nftTxn: ', nftTxn.hash);
-    } catch (error) {
-      if (error.code === 4001) {
-        toast({
-          description: error.message,
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
-      }
     } finally {
       setIsLoading(false);
     }
@@ -366,7 +341,7 @@ const Form = ({ selectedERCStandard }) => {
           backgroundColor="#3C53A4"
           color="#D6D9E5"
           _hover={{ backgroundColor: '#D6D9E5', color: '#3C53A4' }}
-          onClick={() => test1155(2, 4)}
+          onClick={sendFileToIPFS}
           isLoading={isLoading}
         >
           Create
