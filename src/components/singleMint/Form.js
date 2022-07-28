@@ -16,7 +16,7 @@ import NFTcreator721 from '../../utils/NFTcreator721.json';
 import NFTcreator1155 from '../../utils/NFTcreator1155.json';
 
 const CONTRACT_ADDRESS_721 = '0x72f1915e2Be8D2CbF1f2C19A3806EEa77fe6F8ef';
-const CONTRACT_ADDRESS_1155 = '0x9C75b24122CD7AbcF222f0b53411600fe8c5bBD9';
+const CONTRACT_ADDRESS_1155 = '0x2aD8441bFB5d449155Cf099350aD9908AefCDe66';
 const PIN_FILE_URL = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
 const PIN_JSON_URL = 'https://api.pinata.cloud/pinning/pinJsonToIPFS';
 
