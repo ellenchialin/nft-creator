@@ -1,8 +1,15 @@
 import { FormControl, FormLabel, Input } from '@chakra-ui/react';
 
-const TextInput = ({ label, placeHolder, name, value, setValue }) => {
+const TextInput = ({
+  label,
+  placeHolder,
+  name,
+  value,
+  setValue,
+  isRequired,
+}) => {
   return (
-    <FormControl>
+    <FormControl isRequired={isRequired}>
       <FormLabel as="legend" fontSize="14px" fontWeight="bold" color="#FAFAFA">
         {label}
       </FormLabel>

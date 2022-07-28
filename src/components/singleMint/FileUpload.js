@@ -20,7 +20,7 @@ const FileUpload = ({ fileUrl, setFile }) => {
   };
 
   return (
-    <FormControl as="fieldset">
+    <FormControl as="fieldset" isRequired>
       <FormLabel as="legend" fontSize="14px" fontWeight="bold" color="#FAFAFA">
         Upload file
       </FormLabel>
@@ -75,7 +75,6 @@ const FileUpload = ({ fileUrl, setFile }) => {
                 type="file"
                 accept="image/*,video/*"
                 onChange={e => handleUpload(e.target.files[0], setFile)}
-                isRequired
               />
             </VisuallyHidden>
           </Flex>

@@ -195,7 +195,11 @@ const Form = ({ selectedERCStandard }) => {
         let nftTxn =
           selectedERCStandard === '721'
             ? await connectedContract.mintByAmount(1, [`${tokenURI}`])
-            : await connectedContract.mintByAmount(initialSupply, 0, tokenURI);
+            : await connectedContract.mintByAmount(
+                Number(initialSupply),
+                0,
+                tokenURI
+              );
 
         await nftTxn;
 
@@ -276,8 +280,9 @@ const Form = ({ selectedERCStandard }) => {
           name="name"
           value={name}
           setValue={setName}
+          isRequired={true}
         />
-        <FormControl>
+        <FormControl isRequired>
           <FormLabel
             as="legend"
             fontSize="14px"
@@ -305,9 +310,10 @@ const Form = ({ selectedERCStandard }) => {
           name="seriesName"
           value={seriesName}
           setValue={setSeriesName}
+          isRequired={false}
         /> */}
         {selectedERCStandard === '1155' && (
-          <FormControl>
+          <FormControl isRequired>
             <FormLabel
               as="legend"
               fontSize="14px"
@@ -324,6 +330,7 @@ const Form = ({ selectedERCStandard }) => {
               border="none"
               py="14px"
               px="16px"
+              min={1}
               value={initialSupply}
               onChange={e => setInitialSupply(e.target.value)}
             />

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 // prettier-ignore
-import { Box, Flex, ButtonGroup, Button } from '@chakra-ui/react';
+import { Box, Flex, ButtonGroup, Button, Text } from '@chakra-ui/react';
 import { FaFileUpload, FaPlus } from 'react-icons/fa';
 
 import PageTitle from '../PageTitle';
@@ -71,7 +71,10 @@ const MainContainer = () => {
         )}
 
         {selectedMintType === 'batch' && (
-          <BatchForm selectedERCStandard={selectedERCStandard} />
+          <>
+            {/* <BatchForm selectedERCStandard={selectedERCStandard} /> */}
+            <Text color="#D0D3DA">Coming soon...</Text>
+          </>
         )}
         {selectedMintType === 'single' && (
           <Form selectedERCStandard={selectedERCStandard} />

@@ -35,17 +35,17 @@ const AttributeGroup = ({ label, attributes, setAttributes }) => {
       <TableContainer mb="4">
         <Table
           variant="unstyled"
-          css={{ borderCollapse: 'separate', borderSpacing: '0 10px' }}
+          css={{ borderCollapse: 'separate', borderSpacing: '5px 10px' }}
         >
           <Tbody>
             {attributes.map(att => (
-              <Tr key={att.id}>
+              <Tr key={att.id} w="full">
                 <Td p="0">
                   <Input
                     type="text"
                     placeholder="e.g. “Artist name”"
                     name="trait_type"
-                    w="260px"
+                    w="280px"
                     backgroundColor="#2B3954"
                     color="white"
                     border="none"
@@ -60,7 +60,7 @@ const AttributeGroup = ({ label, attributes, setAttributes }) => {
                     type="text"
                     placeholder="e.g. “David”"
                     name="value"
-                    w="260px"
+                    w="280px"
                     backgroundColor="#2B3954"
                     color="white"
                     border="none"
