@@ -16,7 +16,7 @@ import NFTcreator721 from '../../utils/NFTcreator721.json';
 import NFTcreator1155 from '../../utils/NFTcreator1155.json';
 
 const CONTRACT_ADDRESS_721 = '0x72f1915e2Be8D2CbF1f2C19A3806EEa77fe6F8ef';
-const CONTRACT_ADDRESS_1155 = '0x921E32120AE7F7794CEC921DdB66baC4593E5608';
+const CONTRACT_ADDRESS_1155 = '0x9C75b24122CD7AbcF222f0b53411600fe8c5bBD9';
 const PIN_FILE_URL = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
 const PIN_JSON_URL = 'https://api.pinata.cloud/pinning/pinJsonToIPFS';
 
@@ -27,8 +27,8 @@ const Form = ({ selectedERCStandard }) => {
   const [fileUrl, setFileUrl] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [tokenId, setTokenId] = useState('');
   const [initialSupply, setInitialSupply] = useState(1);
-  // const [seriesName, setSeriesName] = useState('');
   const [attributes, setAttributes] = useState([
     { id: uuidv4(), trait_type: '', value: '' },
   ]);
@@ -197,7 +197,7 @@ const Form = ({ selectedERCStandard }) => {
             ? await connectedContract.mintByAmount(1, [`${tokenURI}`])
             : await connectedContract.mintByAmount(
                 Number(initialSupply),
-                0,
+                tokenId ? Number(tokenId) : 0,
                 tokenURI
               );
 
@@ -225,6 +225,7 @@ const Form = ({ selectedERCStandard }) => {
         setFile('');
         setAttributes([{ id: uuidv4(), trait_type: '', value: '' }]);
         setInitialSupply(1);
+        setTokenId('');
       } else {
         toast({
           description: 'Please connect to wallet first and try again.',
@@ -235,12 +236,12 @@ const Form = ({ selectedERCStandard }) => {
       }
     } catch (error) {
       toast({
-        description: 'Fail to submit. Please check network and try again.',
+        description: `Fail to create. (${error.error.message})`,
         status: 'error',
-        duration: 3000,
+        duration: null,
         isClosable: true,
       });
-      console.log(error);
+      console.log(error.error.message);
     } finally {
       setIsLoading(false);
     }
@@ -304,37 +305,53 @@ const Form = ({ selectedERCStandard }) => {
             onChange={e => setDescription(e.target.value)}
           />
         </FormControl>
-        {/* <TextInput
-          label="Series name (optional)"
-          placeHolder="e.g. “Party Animals”"
-          name="seriesName"
-          value={seriesName}
-          setValue={setSeriesName}
-          isRequired={false}
-        /> */}
         {selectedERCStandard === '1155' && (
-          <FormControl isRequired>
-            <FormLabel
-              as="legend"
-              fontSize="14px"
-              fontWeight="bold"
-              color="#FAFAFA"
-            >
-              Initial Supply
-            </FormLabel>
-            <Input
-              type="number"
-              name="initialSupply"
-              backgroundColor="#2B3954"
-              color="white"
-              border="none"
-              py="14px"
-              px="16px"
-              min={1}
-              value={initialSupply}
-              onChange={e => setInitialSupply(e.target.value)}
-            />
-          </FormControl>
+          <>
+            <FormControl isRequired>
+              <FormLabel
+                as="legend"
+                fontSize="14px"
+                fontWeight="bold"
+                color="#FAFAFA"
+              >
+                Initial Supply
+              </FormLabel>
+              <Input
+                type="number"
+                name="initialSupply"
+                backgroundColor="#2B3954"
+                color="white"
+                border="none"
+                py="14px"
+                px="16px"
+                min={1}
+                value={initialSupply}
+                onChange={e => setInitialSupply(e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel
+                as="legend"
+                fontSize="14px"
+                fontWeight="bold"
+                color="#FAFAFA"
+              >
+                Token Id ( If not specified, we will generate it for you
+                automatically. )
+              </FormLabel>
+              <Input
+                type="number"
+                name="tokenId"
+                backgroundColor="#2B3954"
+                color="white"
+                border="none"
+                py="14px"
+                px="16px"
+                value={tokenId}
+                onChange={e => setTokenId(e.target.value)}
+              />
+            </FormControl>
+          </>
         )}
         <AttributeGroup
           label="Attributes (optional)"
