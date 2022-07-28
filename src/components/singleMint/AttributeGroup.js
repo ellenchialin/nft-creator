@@ -6,7 +6,7 @@ const AttributeGroup = ({ label, attributes, setAttributes }) => {
   const handleChange = (id, event) => {
     const newAttributes = attributes.map(att => {
       if (id === att.id) {
-        att[event.target.name] = event.target.value.trim();
+        att[event.target.name] = event.target.value;
       }
       return att;
     });

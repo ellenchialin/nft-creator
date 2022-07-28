@@ -123,9 +123,19 @@ const Form = ({ selectedERCStandard }) => {
     );
   };
 
+  const trimAttributesValues = obj => {
+    return Object.keys(obj).reduce((acc, curr) => {
+      acc[curr] = obj[curr].trim();
+      return acc;
+    }, {});
+  };
+
   const sendJSONtoIPFS = async ipfsHash => {
     try {
       const attributesOmittedId = attributes.map(({ id, ...rest }) => rest);
+      const trimmedAttributes = attributesOmittedId.map(att =>
+        trimAttributesValues(att)
+      );
 
       const isAttributesEmpty = checkAttributesIsEmpty(attributes);
 
@@ -139,7 +149,7 @@ const Form = ({ selectedERCStandard }) => {
             name: name.trim(),
             description: description.trim(),
             image: ipfsHash,
-            attributes: attributesOmittedId,
+            attributes: trimmedAttributes,
           });
 
       console.log('jsonData: ', jsonData);
